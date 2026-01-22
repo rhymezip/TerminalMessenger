@@ -43,7 +43,18 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-
     ```Bash
 
     python3 TerminalMessenger.py
+    
+* ## 🔔 Notification Sound Setup
 
+* If you don't hear a "beep" when a new message arrives, please check your terminal settings:
+
+    **Windows (Terminal):** Settings > Defaults > Advanced > Bell notification style -> Set to "Audible" or "All".
+
+    **macOS (Terminal):** Settings > Profiles > Advanced > Check "Audible bell".
+
+    **Linux:** Open your terminal's Preferences and enable "Terminal Bell". Also, ensure "System Sounds" is unmuted in your OS settings.
+
+    **Note:** The notification sound only triggers when the terminal is in the background (preventing annoyance while you are actively typing).
 * ### 🛠️ What Happens When You Run It?
 
 When you launch the script for the first time, the "Rhyme Engine" performs these steps:
