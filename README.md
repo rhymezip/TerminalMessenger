@@ -25,11 +25,11 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-
 3. **Run:** Execute the following command:
    ```powershell
    python TerminalMessenger.py
-## 🍎 macOS
-    Download: Save TerminalMessenger.py to your device.
-    Open Terminal: Press Cmd + Space, type Terminal, and hit Enter.
-    Navigate: Go to the file's folder (e.g., cd Downloads).
-    Run: Execute the following command:
+* ## 🍎 macOS
+    **Download:** Save TerminalMessenger.py to your device.
+    **Open Terminal:** Press Cmd + Space, type Terminal, and hit Enter.
+    **Navigate:** Go to the file's folder (e.g., cd Downloads).
+    **Run:** Execute the following command:
     Bash
     python3 TerminalMessenger.py
     
