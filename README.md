@@ -1,4 +1,4 @@
-# 🛡️ TERMINAL MESSENGER (Rhyme Edition)
+# 🛡️ TERMINAL MESSENGER (rhyme Edition)
 
 > **"Speed, Privacy, and the Power of Terminal."**
 
@@ -25,20 +25,15 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-
 3. **Run:** Execute the following command:
    ```powershell
    python TerminalMessenger.py
-*** 🍎 macOS
-
-    **Download:** Save TerminalMessenger.py to your device.
-
-    **Open Terminal:** Press Cmd + Space, type Terminal, and hit Enter.
-
-    **Navigate:** Go to the file's folder (e.g., cd Downloads).
-
-    **Run:** Execute the following command:
+## 🍎 macOS
+    Download: Save TerminalMessenger.py to your device.
+    Open Terminal: Press Cmd + Space, type Terminal, and hit Enter.
+    Navigate: Go to the file's folder (e.g., cd Downloads).
+    Run: Execute the following command:
     Bash
-
     python3 TerminalMessenger.py
-
-*** 🐧 Linux
+    
+* ## 🐧 Linux
 
     **Download:** Save the script to your desired directory.
 
@@ -49,27 +44,22 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-
 
     python3 TerminalMessenger.py
 
-*** 🛠️ What Happens When You Run It?
+* ### 🛠️ What Happens When You Run It?
 
 When you launch the script for the first time, the "Rhyme Engine" performs these steps:
-
     **Auto-Dependency Check:** Scans for requests, rich, and cryptography.
-
     **Silent Installation:** Automatically installs missing libs in seconds.
-
     **Secure Handshake:** Establishes a masked connection to the database.
-
     **UI Rendering:** The custom ASCII logo and login portal appear instantly.
 
-*** 🎨 User Interface (Custom UI)
+* ### 🎨 User Interface (Custom UI)
 **Entity	Color	Style**
 **YOU**	🔴 Red	Bold
 **PARTNER**	🟠 Orange	Bold
 **TIMESTAMPS**	🔵 Cadet Blue	Bold
 **MESSAGES**	⚪ White	Bold
 
-*** 📖 How to Use
-
+* ## 📖 How to Use
     **Login:** Enter your username and password. (Remember your password! It cannot be recovered.)
 
     **Connect:** Enter the username of the person you want to chat with.
@@ -78,7 +68,7 @@ When you launch the script for the first time, the "Rhyme Engine" performs these
 
     **Exit:** Type q and hit Enter to return to the main menu.
 
-*** 📜 License
+* ## 📜 License
 
 This project is licensed under the MIT License.
 Plaintext
@@ -103,6 +93,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*** 👨‍💻 Developed by rhyme
+### 👨‍💻 Developed by rhyme
 
 "In Code We Trust, In Encryption We Hide."
