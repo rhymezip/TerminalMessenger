@@ -81,9 +81,6 @@ def chat_screen(room_id, username, target):
                                 ts = m.get('t', '--:--')
                                 console.print(f"[bold cadet_blue][{ts}][/] [bold orange_red1]{u_real.upper()}:[/] [bold white]{text}[/]")
                                 sys.stdout.write('\a')
-if os.name == 'nt':
-    import winsound
-    winsound.Beep(1000, 200)
                                 sys.stdout.flush()
                             shown_msgs.add(m_id)
             except: pass
