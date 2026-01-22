@@ -80,6 +80,11 @@ def chat_screen(room_id, username, target):
                                 text = dec(m.get('m'))
                                 ts = m.get('t', '--:--')
                                 console.print(f"[bold cadet_blue][{ts}][/] [bold orange_red1]{u_real.upper()}:[/] [bold white]{text}[/]")
+                                sys.stdout.write('\a')
+if os.name == 'nt':
+    import winsound
+    winsound.Beep(1000, 200)
+                                sys.stdout.flush()
                             shown_msgs.add(m_id)
             except: pass
             time.sleep(1)
@@ -139,8 +144,19 @@ def main():
             if c == "1":
                 target = Prompt.ask(" " * 15 + "👤 [bold white]TARGET USER[/]").lower().strip()
                 if target:
-                    r_id = "CH_" + "_".join(sorted([anonymize(current_user), anonymize(target)]))
-                    chat_screen(r_id, current_user, target)
+                    target_id = anonymize(target)
+                    try:
+                        check = requests.get(f"{DB_URL}/users/{target_id}.json", timeout=5)
+                        if check.json() is None:
+                            console.print(Align.center(f"[bold red]USER NOT FOUND: {target.upper()}[/]"))
+                            time.sleep(1.5)
+                            continue
+                        
+                        r_id = "CH_" + "_".join(sorted([anonymize(current_user), target_id]))
+                        chat_screen(r_id, current_user, target)
+                    except:
+                        console.print(Align.center("[bold red]NETWORK ERROR![/]"))
+                        time.sleep(1)
             elif c == 'q':
                 break
     except KeyboardInterrupt:
