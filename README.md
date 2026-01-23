@@ -9,12 +9,19 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 ## 🚀 Key Features
 
 * **🛡️ AES-256 Encryption:** Industry-standard Fernet (AES-256) encryption applied locally on your machine.
+  
 * **🕵️ Identity Masking:** Usernames are transformed into 12-character hex strings using SHA-256 salting, making metadata analysis impossible.
+  
 * **💾 Cloud Persistence:**Messages are stored in a secure Firebase Realtime Database. They stay there until you decide to change the tunnel.
+  
 * **🔔 Audible Bell (Notification):**Integrated terminal bell (\a) triggers a "Beep" sound when a new message arrives from your partner.
+  
 * **🎨 Terminal Aesthetics:** A beautiful, color-coded interface designed with the rich library for maximum readability.
+  
 * **💻 Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
+  
 * **⚡ Auto-Dependency Engine:** The "Rhyme Engine" automatically detects and installs requests, rich, and cryptography libraries upon launch.
+  
 * **🔒 Zero-Knowledge Policy:** No readable logs or data are ever stored on the server side.
 
 ---
@@ -22,12 +29,15 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 ## 🛠️ Setup Instructions by OS
 
 ### 🪟 Windows
+
 1. **Download:** Save `TerminalMessenger.py` to a folder.
 2. **Open Terminal:** Type `cmd` or `powershell` in the folder's address bar and hit Enter.
 3. **Run:** Execute the following command:
    ```powershell
    python TerminalMessenger.py
+   
 * ## 🍎 macOS
+  
     **Download:** Save TerminalMessenger.py to your device.
     **Open Terminal:** Press Cmd + Space, type Terminal, and hit Enter.
     **Navigate:** Go to the file's folder (e.g., cd Downloads).
@@ -38,9 +48,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 * ## 🐧 Linux
 
     **Download:** Save the script to your desired directory.
-
     **Open Terminal:** Right-click in the folder and select "Open in Terminal".
-
     **Run:** Execute the following command:
     ```Bash
 
@@ -84,6 +92,32 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
     **Tunnel Opening:** Enter your secret "Tunnel Key". This key is the master cipher for your messages and is NEVER stored online.
     **Messaging:** Type your message and hit Enter. You will hear a "Bell" notification when your partner replies.
     **Exit Strategy:** Type q and hit Enter to collapse the tunnel and return to the main menu safely.
+
+* ## 🗺️ Roadmap & Future Developments
+
+We are constantly working to make Terminal Messenger the most secure CLI chat tool. Here is our path forward:
+
+   **🌍 Multi-Language Support:** We aim to implement a localization system. Contributors are welcome to add Turkish, German, Spanish, and more.
+
+   **🕵️ Metadata & Username Anonymity:** Currently, usernames are masked with SHA-256. While the message content is 100% secure, we are working on a more advanced relay system to further decouple identities from room IDs.
+
+   **📁 Encrypted File Transfer:** Implementation of a system to send small files (base64 encoded) through the same AES-256 encrypted tunnel.
+
+   **📉 Auto-Destructing Messages:** A "Burn After Reading" feature that deletes messages from the Firebase database after a set period.
+
+   **🔑 Multi-Factor Authentication (MFA):** Adding a second layer of security via mobile or email codes for the login process.
+
+* ## 🤝 Contributing
+
+Terminal Messenger is an open-source project and we love contributions!
+
+   **Reporting Bugs:** If you find a security hole or a connection bug, please open an issue immediately.
+
+   **Feature Requests:** Have a cool idea? Let us know!
+
+   **Code Quality:** We strictly follow the "Zero-Knowledge" policy. Any contribution must ensure that the Tunnel Key never touches the server side.
+
+"The only way to keep a secret is to make sure no one else knows you have one."
 
 ---
 
