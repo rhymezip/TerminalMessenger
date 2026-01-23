@@ -1,4 +1,4 @@
-import os, subprocess, sys, base64, hashlib, threading, time
+import os, subprocess, sys, base64, hashlib, threading, time, json, re
 from datetime import datetime
 
 def prepare_libs():
@@ -21,26 +21,22 @@ from rich.prompt import Prompt
 from rich.align import Align
 from rich.panel import Panel
 from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 console = Console(force_terminal=True)
+SALT_VAL = b"Rhyme_99_X_Secret"
 
-def _build_conn():
-    _m = "aHR0cHM6Ly90ZXJtaW5hbC1tZXNzZW5nZXItZjFmZWQtZGVmYXVsdC1ydGRiLmV1cm9wZS13ZXN0MS5maXJlYmFzZWRhdGFiYXNlLmFwcA=="
-    return base64.b64decode(_m).decode()
+def get_db_conn():
+    p1 = "aHR0cHM6Ly90ZXJtaW5hbC1tZXNzZW5nZXItZjFmZWQt"
+    p2 = "ZGVmYXVsdC1ydGRiLmV1cm9wZS13ZXN0MS5maXJlYmFzZWRhdGFiYXNlLmFwcA=="
+    return base64.b64decode(p1 + p2).decode()
 
-DB_URL = _build_conn()
-_k = b'YV9zeW00X3A0c3N3MHJkX2ZfcmVhbF9nZWVrc19vbmx5X3JobXk='
-cipher = Fernet(base64.urlsafe_b64encode(_k.ljust(32)[:32]))
-SALT = "Rhyme_Secret_99!_X"
+DB_URL = get_db_conn()
 
-def enc(data): return cipher.encrypt(data.encode()).decode()
-def dec(data):
-    try: return cipher.decrypt(data.encode()).decode()
-    except: return None
-def anonymize(text): return hashlib.sha256((text + SALT).encode()).hexdigest()[:12]
-def hash_p(p): return hashlib.sha256((p + SALT).encode()).hexdigest()
-
-LOGO = r"""
+def draw_header(user=None):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    logo = r"""
 [bold red]████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗
 ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║
    ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║
@@ -48,116 +44,119 @@ LOGO = r"""
    ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗
    ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝[/]
 """
-
-def draw_header(user=None):
-    os.system('cls' if os.name == 'nt' else 'clear')
-    console.print(Align.center(LOGO))
+    console.print(Align.center(logo))
     if user:
-        console.print(f"[bold white]ID: {user.upper()}[/]{' ' * (45 - len(user))}[bold white]by rhymezip[/]")
-    else:
-        console.print(f"{' ' * 50}[bold white]by rhymezip[/]")
+        console.print(Align.center(Panel(f"[bold yellow]ID: {user.upper()}[/]", border_style="bold red")))
+    console.print(Align.right("[bold dim]by rhyme[/]   "))
     console.print("\n")
 
-def chat_screen(room_id, username, target):
+def is_latin(text): return bool(re.match(r'^[a-zA-Z0-9_]+$', text))
+def derive_key(passphrase):
+    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=SALT_VAL, iterations=100000)
+    return base64.urlsafe_b64encode(kdf.derive(passphrase.encode()))
+def anonymize(text): return hashlib.sha256((text + "R_S").encode()).hexdigest()[:12]
+def hash_p(p): return hashlib.sha256((p + "R_P").encode()).hexdigest()
+
+def chat_screen(room_id, username, target, tk):
+    cipher = Fernet(derive_key(tk))
     draw_header(username)
-    console.print(Align.center(Panel(f"[bold white]🔒 TUNNEL: {username.upper()} <-> {target.upper()}\n[italic white](Type 'q' + 'Enter' to exit)[/]", border_style="green", expand=False)))
-
+    console.print(Align.center(f"[bold red]>>> [bold white]TUNNELING WITH: {target.upper()}[/] <<<[/]"))
+    console.print(Align.center("[bold dim](Type 'q' to exit chat)[/]\n"))
     shown_msgs = set()
-    thread_active = True
-    session = requests.Session()
+    stop_event = threading.Event()
 
-    def listen_msgs():
-        while thread_active:
+    def listen():
+        while not stop_event.is_set():
             try:
-                res = session.get(f"{DB_URL}/messages/{room_id}.json", timeout=10)
-                data = res.json()
-                if data:
+                res = requests.get(f"{DB_URL}/messages/{room_id}.json", timeout=10)
+                if res.status_code == 200 and res.json():
+                    data = res.json()
                     for m_id in sorted(data.keys()):
                         if m_id not in shown_msgs:
                             m = data[m_id]
-                            u_real = dec(m.get('u'))
-                            if u_real and u_real != username:
-                                text = dec(m.get('m'))
-                                ts = m.get('t', '--:--')
-                                console.print(f"[bold cadet_blue][{ts}][/] [bold orange_red1]{u_real.upper()}:[/] [bold white]{text}[/]")
-                                sys.stdout.write('\a')
-                                sys.stdout.flush()
-                            shown_msgs.add(m_id)
+                            try:
+                                u_dec = cipher.decrypt(m['u'].encode()).decode()
+                                m_dec = cipher.decrypt(m['m'].encode()).decode()
+                                color = "red" if u_dec != username else "green"
+                                tag = u_dec.upper() if u_dec != username else "YOU"
+                                console.print(f"[bold cyan][{m['t']}][/] [bold {color}]{tag}:[/] [bold white]{m_dec}[/]")
+                                shown_msgs.add(m_id)
+                            except: shown_msgs.add(m_id)
             except: pass
-            time.sleep(1)
+            time.sleep(1.5)
 
-    threading.Thread(target=listen_msgs, daemon=True).start()
-
-    while True:
+    threading.Thread(target=listen, daemon=True).start()
+    
+    while not stop_event.is_set():
         try:
             msg = input().strip()
             if not msg: continue
+            if msg.lower() == 'q': stop_event.set(); break
+            
             sys.stdout.write("\033[A\033[K")
-            if msg.lower() == 'q':
-                thread_active = False
-                break
             ts = datetime.now().strftime("%H:%M")
-            console.print(f"[bold cadet_blue][{ts}][/] [bold red]YOU:[/][bold white] {msg}[/]")
-            requests.post(f"{DB_URL}/messages/{room_id}.json", json={"u": enc(username), "m": enc(msg), "t": ts}, timeout=5)
-        except: break
+            payload = {"u": cipher.encrypt(username.encode()).decode(), "m": cipher.encrypt(msg.encode()).decode(), "t": ts}
+            
+            # GÖNDERME DENEMESİ
+            post_res = requests.post(f"{DB_URL}/messages/{room_id}.json", json=payload, timeout=7)
+            
+            if post_res.status_code != 200:
+                console.print("[bold red][ERROR: MESSAGE NOT SENT - SERVER REJECTED][/]")
+        except (requests.exceptions.RequestException, Exception):
+            console.print("[bold red][ERROR: CONNECTION LOST - RETRYING...][/]")
 
 def main():
     try:
-        current_user = None
-        while not current_user:
-            draw_header()
-            u = Prompt.ask(" " * 12 + "👤 [bold white]USERNAME[/]").lower().strip()
-            p = Prompt.ask(" " * 12 + "🔐 [bold white]PASSWORD[/]", password=True).strip()
-            if not u or not p: continue
-
-            u_id = anonymize(u)
-            p_hash = hash_p(p)
-
-            try:
-                res = requests.get(f"{DB_URL}/users/{u_id}.json", timeout=10)
-                data = res.json()
-                if data is None:
-                    requests.put(f"{DB_URL}/users/{u_id}.json", json={"pass": p_hash})
-                    current_user = u
-                elif str(data.get('pass')) == p_hash:
-                    current_user = u
-                else:
-                    console.print(Align.center("[bold red]INVALID PASSWORD![/]"))
-                    time.sleep(1)
-            except:
-                console.print(Align.center("[bold red]CONNECTION ERROR![/]"))
-                time.sleep(1)
-
         while True:
-            draw_header(current_user)
-            table = Table(show_header=False, border_style="white", box=None)
-            table.add_row("[bold yellow][1][/]", "[bold white]START MESSAGING[/]")
-            table.add_row("[bold red][Q][/]", "[bold white]LOGOUT[/]")
-            console.print(Align.center(table))
+            draw_header()
+            v_panel = Panel("[bold white]Type “token” below[/]", border_style="bold yellow", expand=False)
+            console.print(Align.center(v_panel))
+            if Prompt.ask("\n[bold cyan]>>>[/]").strip().lower() != "token": continue
 
-            c = Prompt.ask("\n" + " " * 15 + "[bold white]ACTION[/]").lower().strip()
-            if not c: continue
+            current_user = None
+            while not current_user:
+                draw_header()
+                u = Prompt.ask("[bold white]USERNAME[/]").lower().strip()
+                if not is_latin(u): continue
+                p = Prompt.ask("[bold white]PASSWORD[/]", password=True).strip()
+                u_id = anonymize(u); p_hash = hash_p(p)
+                
+                try:
+                    res = requests.get(f"{DB_URL}/users/{u_id}.json", timeout=10)
+                    data = res.json()
+                    if data is None:
+                        console.print(Align.center("[bold green]NEW ENCRYPTED PROFILE CREATED![/]"))
+                        requests.put(f"{DB_URL}/users/{u_id}.json", json={"pass": p_hash})
+                        current_user = u; time.sleep(1)
+                    elif data.get('pass') == p_hash:
+                        current_user = u; draw_header(current_user); time.sleep(0.5)
+                    else:
+                        console.print(Align.center("[bold red]INVALID PASSWORD![/]")); time.sleep(1.5)
+                except: console.print(Align.center("[bold red]CONNECTION ERROR![/]")); time.sleep(2)
 
-            if c == "1":
-                target = Prompt.ask(" " * 15 + "👤 [bold white]TARGET USER[/]").lower().strip()
-                if target:
-                    target_id = anonymize(target)
+            while current_user:
+                draw_header(current_user)
+                menu = Table(box=None, show_header=False)
+                menu.add_row("[bold yellow]1.[/]", "[bold white]NEW TUNNEL[/]")
+                menu.add_row("[bold red]Q.[/]", "[bold red]LOGOUT[/]")
+                console.print(Align.center(Panel(menu, title="[bold white]MENU[/]", border_style="bold white", expand=False)))
+                choice = Prompt.ask("\n[bold white]SELECT[/]").lower().strip()
+                if choice == "1":
+                    target = Prompt.ask("[bold white]TARGET USER[/]").lower().strip()
+                    t_id = anonymize(target)
                     try:
-                        check = requests.get(f"{DB_URL}/users/{target_id}.json", timeout=5)
-                        if check.json() is None:
-                            console.print(Align.center(f"[bold red]USER NOT FOUND: {target.upper()}[/]"))
-                            time.sleep(1.5)
-                            continue
-                        
-                        r_id = "CH_" + "_".join(sorted([anonymize(current_user), target_id]))
-                        chat_screen(r_id, current_user, target)
-                    except:
-                        console.print(Align.center("[bold red]NETWORK ERROR![/]"))
-                        time.sleep(1)
-            elif c == 'q':
-                break
-    except KeyboardInterrupt:
-        sys.exit()
+                        t_res = requests.get(f"{DB_URL}/users/{t_id}.json", timeout=10)
+                        if not t_res.json():
+                            console.print(Align.center(f"[bold red]USER NOT FOUND: {target.upper()}[/]")); time.sleep(1.5); continue
+                        tk = Prompt.ask("[bold white]TUNNEL KEY[/]", password=True).strip()
+                        r_id = f"CH_{sorted([u_id, t_id])[0]}_{sorted([u_id, t_id])[1]}"
+                        chat_screen(r_id, current_user, target, tk)
+                    except: console.print(Align.center("[bold red]SERVER ERROR![/]")); time.sleep(1.5)
+                elif choice == "q": break
+    except KeyboardInterrupt: pass
+    finally:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        console.print("[bold red]TERMINAL CLOSED SECURELY. BYE![/]")
 
 if __name__ == "__main__":
     main()
