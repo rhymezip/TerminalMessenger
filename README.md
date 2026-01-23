@@ -2,17 +2,19 @@
 
 > **"Speed, Privacy, and the Power of Terminal."**
 
-Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-256) messaging platform. It is designed to keep your conversations private, ensuring that even if someone intercepts the database, they see nothing but gibberish.
+Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE) messaging platform. Built for power users who value privacy, it ensures that your conversations remain invisible to everyone—including database administrators.
 
 ---
 
 ## 🚀 Key Features
 
-* **🛡️ End-to-End Encryption:** Messages are encrypted with **AES-256** before they even leave your computer.
-* **🕵️ Full Anonymity:** Usernames are masked using SHA-256. No one knows who is talking to whom.
-* **🎨 Terminal Aesthetics:** A rich, bold, and colorful CLI interface designed for power users.
+* **🛡️ AES-256 Encryption:** Industry-standard Fernet (AES-256) encryption applied locally on your machine.
+* **🕵️ Identity Masking:** Usernames are transformed into 12-character hex strings using SHA-256 salting, making metadata analysis impossible.
+* **💾 Cloud Persistence:**Messages are stored in a secure Firebase Realtime Database. They stay there until you decide to change the tunnel.
+* **🔔 Audible Bell (Notification):**Integrated terminal bell (\a) triggers a "Beep" sound when a new message arrives from your partner.
+* **🎨 Terminal Aesthetics:** A beautiful, color-coded interface designed with the rich library for maximum readability.
 * **💻 Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
-* **⚡ Zero-Config:** The program automatically detects and installs missing dependencies.
+* **⚡ Auto-Dependency Engine:** The "Rhyme Engine" automatically detects and installs requests, rich, and cryptography libraries upon launch.
 * **🔒 Zero-Knowledge Policy:** No readable logs or data are ever stored on the server side.
 
 ---
@@ -43,6 +45,8 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-
     ```Bash
 
     python3 TerminalMessenger.py
+
+---
     
 * ## 🔔 Notification Sound Setup
 
@@ -51,30 +55,37 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (AES-
     **macOS (Terminal):** Settings > Profiles > Advanced > Check "Audible bell".
     **Linux:** Open your terminal's Preferences and enable "Terminal Bell". Also, ensure "System Sounds" is unmuted in your OS settings.
     **Note:** The notification sound only triggers when the terminal is in the background (preventing annoyance while you are actively typing).
+
+---
     
 * ### 🛠️ What Happens When You Run It?
 
-When you launch the script for the first time, the "Rhyme Engine" performs these steps:
-    **Auto-Dependency Check:** Scans for requests, rich, and cryptography.
-    **Silent Installation:** Automatically installs missing libs in seconds.
-    **Secure Handshake:** Establishes a masked connection to the database.
-    **UI Rendering:** The custom ASCII logo and login portal appear instantly.
+ When you launch the script, the "Rhyme Engine" executes a high-speed initialization sequence:
+    **Auto-Dependency Check:** Scans your system for requests, rich, and cryptography libraries.
+    **Silent Installation:** If any are missing, it installs them automatically within seconds—no manual setup required.
+    **Cryptographic Handshake:** Initializes the AES-256 Fernet engine and establishes a secure, masked connection to the Firebase Realtime Database.
+    **UI Rendering:** The custom Rhyme-edition ASCII logo and the secure login portal are rendered instantly.
+
+---
 
 * ### 🎨 User Interface (Custom UI)
 **Entity	Color	Style**
-**YOU**	🔴 Red	Bold
-**PARTNER**	🟠 Orange	Bold
-**TIMESTAMPS**	🔵 Cadet Blue	Bold
-**MESSAGES**	⚪ White	Bold
+**YOU**	🟢 Green	Bold	Indicates your own outgoing messages.
+**PARTNER**	🔴 Red	Bold	Indicates incoming messages from your contact.
+**TIMESTAMPS**	🔵 🔵 Cyan	Bold	Shows exactly when the message hit the tunnel.
+**MESSAGES**	⚪ White	Bold	The decrypted, clear-text message content.
+**TUNNEL INFO**🟡 Yellow	Bold	Displays current encryption status and room ID.
+
+---
 
 * ## 📖 How to Use
-    **Login:** Enter your username and password. (Remember your password! It cannot be recovered.)
+    **Authentication:** Enter your username and password. Note: Your password is hashed (SHA-256) and cannot be recovered if lost.
+    **The Handshake:** Type the username of the person you wish to connect with. Both users must be registered on the database.
+    **Tunnel Opening:** Enter your secret "Tunnel Key". This key is the master cipher for your messages and is NEVER stored online.
+    **Messaging:** Type your message and hit Enter. You will hear a "Bell" notification when your partner replies.
+    **Exit Strategy:** Type q and hit Enter to collapse the tunnel and return to the main menu safely.
 
-    **Connect:** Enter the username of the person you want to chat with.
-
-    **Chat:** Type your message and hit Enter.
-
-    **Exit:** Type q and hit Enter to return to the main menu.
+---
 
 * ## 📜 License
 
