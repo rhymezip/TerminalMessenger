@@ -132,6 +132,10 @@ Terminal Messenger is an open-source project and we love contributions!
 
 "The only way to keep a secret is to make sure no one else knows you have one."
 
+### ⚠️ Security Disclaimer
+
+The system is designed with a "Privacy-First" mindset. The only theoretical weak point is the mapping of usernames via SHA-256 hashes. Apart from this, there are no backdoors. Your messages are protected by military-grade AES-256 encryption, and only those with the Tunnel Key can read them.
+
 ---
 
   ### 📜 License
