@@ -20,7 +20,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
   
  **💻 Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
   
- **⚡ Auto-Dependency Engine:** Automatically detects and installs requests, rich, and cryptography libraries upon launch.
+ **⚡ Auto-Dependency Engine:** The script is designed for a seamless "plug-and-play" experience. Upon launch, it automatically detects any missing libraries (such as rich, cryptography, or pyrebase4) and installs them for you. No manual configuration is required.
   
  **🔒 Zero-Knowledge Policy:** No readable logs or data are ever stored on the server side.
 
@@ -131,6 +131,10 @@ Terminal Messenger is an open-source project and we love contributions!
    **Code Quality:** We strictly follow the "Zero-Knowledge" policy. Any contribution must ensure that the Tunnel Key never touches the server side.
 
 "The only way to keep a secret is to make sure no one else knows you have one."
+
+### ⚠️ Important (Tunnel Key Sync):
+
+For messages to be decrypted successfully, both users in the tunnel must enter the exact same "Tunnel Key". If the keys do not match, the messages will appear as encrypted (unreadable) junk text. Always share your T-Key through a secure channel before starting a session.
 
 ### ⚠️ Security Disclaimer
 
