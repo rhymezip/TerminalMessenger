@@ -26,7 +26,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 
 ---
 
-## 🛠️ Setup Instructions by OS
+* ## 🛠️ Setup Instructions by OS
 
 ### 🪟 Windows
 
@@ -35,21 +35,21 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 3. **Run:** Execute the following command:
    ```powershell
    python TerminalMessenger.py
-   
+
 * ## 🍎 macOS
-  
-    **Download:** Save TerminalMessenger.py to your device.
-    **Open Terminal:** Press Cmd + Space, type Terminal, and hit Enter.
-    **Navigate:** Go to the file's folder (e.g., cd Downloads).
-    **Run:** Execute the following command:
+
+1. **Download:** Save TerminalMessenger.py to your device.
+2. **Open Terminal:** Press Cmd + Space, type Terminal, and hit Enter.
+3. **Navigate:** Go to the file's folder (e.g., cd Downloads).
+4. **Run:** Execute the following command:
     Bash
     python3 TerminalMessenger.py
     
 * ## 🐧 Linux
 
-    **Download:** Save the script to your desired directory.
-    **Open Terminal:** Right-click in the folder and select "Open in Terminal".
-    **Run:** Execute the following command:
+1. **Download:** Save the script to your desired directory.
+2. **Open Terminal:** Right-click in the folder and select "Open in Terminal".
+3. **Run:** Execute the following command:
     ```Bash
 
     python3 TerminalMessenger.py
@@ -79,19 +79,30 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 * ### 🎨 User Interface (Custom UI)
 **Entity	Color	Style**
 **YOU**	🟢 Green	Bold	Indicates your own outgoing messages.
+
 **PARTNER**	🔴 Red	Bold	Indicates incoming messages from your contact.
+
 **TIMESTAMPS**	🔵 🔵 Cyan	Bold	Shows exactly when the message hit the tunnel.
+
 **MESSAGES**	⚪ White	Bold	The decrypted, clear-text message content.
+
 **TUNNEL INFO**🟡 Yellow	Bold	Displays current encryption status and room ID.
 
 ---
 
 * ## 📖 How to Use
+  
     **Authentication:** Enter your username and password. Note: Your password is hashed (SHA-256) and cannot be recovered if lost.
+  
     **The Handshake:** Type the username of the person you wish to connect with. Both users must be registered on the database.
+  
     **Tunnel Opening:** Enter your secret "Tunnel Key". This key is the master cipher for your messages and is NEVER stored online.
+  
     **Messaging:** Type your message and hit Enter. You will hear a "Bell" notification when your partner replies.
+  
     **Exit Strategy:** Type q and hit Enter to collapse the tunnel and return to the main menu safely.
+
+---
 
 * ## 🗺️ Roadmap & Future Developments
 
@@ -106,6 +117,8 @@ We are constantly working to make Terminal Messenger the most secure CLI chat to
    **📉 Auto-Destructing Messages:** A "Burn After Reading" feature that deletes messages from the Firebase database after a set period.
 
    **🔑 Multi-Factor Authentication (MFA):** Adding a second layer of security via mobile or email codes for the login process.
+
+---
 
 * ## 🤝 Contributing
 
