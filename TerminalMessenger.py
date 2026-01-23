@@ -97,7 +97,6 @@ def chat_screen(room_id, username, target, tk):
             ts = datetime.now().strftime("%H:%M")
             payload = {"u": cipher.encrypt(username.encode()).decode(), "m": cipher.encrypt(msg.encode()).decode(), "t": ts}
             
-            # GÖNDERME DENEMESİ
             post_res = requests.post(f"{DB_URL}/messages/{room_id}.json", json=payload, timeout=7)
             
             if post_res.status_code != 200:
