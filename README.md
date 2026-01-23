@@ -8,25 +8,25 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 
 ## 🚀 Key Features
 
-* **🛡️ AES-256 Encryption:** Industry-standard Fernet (AES-256) encryption applied locally on your machine.
+ **🛡️ AES-256 Encryption:** Industry-standard Fernet (AES-256) encryption applied locally on your machine.
   
-* **🕵️ Identity Masking:** Usernames are transformed into 12-character hex strings using SHA-256 salting, making metadata analysis impossible.
+ **🕵️ Identity Masking:** Usernames are transformed into 12-character hex strings using SHA-256 salting, making metadata analysis impossible.
   
-* **💾 Cloud Persistence:**Messages are stored in a secure Firebase Realtime Database. They stay there until you decide to change the tunnel.
+ **💾 Cloud Persistence:**Messages are stored in a secure Firebase Realtime Database. They stay there until you decide to change the tunnel.
   
-* **🔔 Audible Bell (Notification):**Integrated terminal bell (\a) triggers a "Beep" sound when a new message arrives from your partner.
+ **🔔 Audible Bell (Notification):**Integrated terminal bell (\a) triggers a "Beep" sound when a new message arrives from your partner.
   
-* **🎨 Terminal Aesthetics:** A beautiful, color-coded interface designed with the rich library for maximum readability.
+ **🎨 Terminal Aesthetics:** A beautiful, color-coded interface designed with the rich library for maximum readability.
   
-* **💻 Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
+ **💻 Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
   
-* **⚡ Auto-Dependency Engine:** The "Rhyme Engine" automatically detects and installs requests, rich, and cryptography libraries upon launch.
+ **⚡ Auto-Dependency Engine:** The "Rhyme Engine" automatically detects and installs requests, rich, and cryptography libraries upon launch.
   
-* **🔒 Zero-Knowledge Policy:** No readable logs or data are ever stored on the server side.
+ **🔒 Zero-Knowledge Policy:** No readable logs or data are ever stored on the server side.
 
 ---
 
-* ## 🛠️ Setup Instructions by OS
+ ## 🛠️ Setup Instructions by OS
 
 ### 🪟 Windows
 
@@ -36,7 +36,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
    ```powershell
    python TerminalMessenger.py
 
-* ## 🍎 macOS
+### 🍎 macOS
 
 1. **Download:** Save TerminalMessenger.py to your device.
 2. **Open Terminal:** Press Cmd + Space, type Terminal, and hit Enter.
@@ -45,7 +45,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
     Bash
     python3 TerminalMessenger.py
     
-* ## 🐧 Linux
+### 🐧 Linux
 
 1. **Download:** Save the script to your desired directory.
 2. **Open Terminal:** Right-click in the folder and select "Open in Terminal".
@@ -56,7 +56,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 
 ---
     
-* ## 🔔 Notification Sound Setup
+ ### 🔔 Notification Sound Setup
 
  If you don't hear a "beep" when a new message arrives, please check your terminal settings:
     **Windows (Terminal):** Settings > Defaults > Advanced > Bell notification style -> Set to "Audible" or "All".
@@ -66,7 +66,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 
 ---
     
-* ### 🛠️ What Happens When You Run It?
+### 🛠️ What Happens When You Run It?
 
  When you launch the script, the "Rhyme Engine" executes a high-speed initialization sequence:
     **Auto-Dependency Check:** Scans your system for requests, rich, and cryptography libraries.
@@ -76,7 +76,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 
 ---
 
-* ### 🎨 User Interface (Custom UI)
+### 🎨 User Interface (Custom UI)
 **Entity	Color	Style**
 **YOU**	🟢 Green	Bold	Indicates your own outgoing messages.
 
@@ -90,21 +90,21 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
 
 ---
 
-* ## 📖 How to Use
+### 📖 How to Use
   
-    **Authentication:** Enter your username and password. Note: Your password is hashed (SHA-256) and cannot be recovered if lost.
+  **Authentication:** Enter your username and password. Note: Your password is hashed (SHA-256) and cannot be recovered if lost.
   
-    **The Handshake:** Type the username of the person you wish to connect with. Both users must be registered on the database.
+  **The Handshake:** Type the username of the person you wish to connect with. Both users must be registered on the database.
   
-    **Tunnel Opening:** Enter your secret "Tunnel Key". This key is the master cipher for your messages and is NEVER stored online.
+  **Tunnel Opening:** Enter your secret "Tunnel Key". This key is the master cipher for your messages and is NEVER stored online.
   
-    **Messaging:** Type your message and hit Enter. You will hear a "Bell" notification when your partner replies.
+  **Messaging:** Type your message and hit Enter. You will hear a "Bell" notification when your partner replies.
   
-    **Exit Strategy:** Type q and hit Enter to collapse the tunnel and return to the main menu safely.
+  **Exit Strategy:** Type q and hit Enter to collapse the tunnel and return to the main menu safely.
 
 ---
 
-* ## 🗺️ Roadmap & Future Developments
+### 🗺️ Roadmap & Future Developments
 
 We are constantly working to make Terminal Messenger the most secure CLI chat tool. Here is our path forward:
 
@@ -120,7 +120,7 @@ We are constantly working to make Terminal Messenger the most secure CLI chat to
 
 ---
 
-* ## 🤝 Contributing
+### 🤝 Contributing
 
 Terminal Messenger is an open-source project and we love contributions!
 
@@ -134,7 +134,7 @@ Terminal Messenger is an open-source project and we love contributions!
 
 ---
 
-* ## 📜 License
+### 📜 License
 
 This project is licensed under the MIT License.
 Plaintext
