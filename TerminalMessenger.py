@@ -149,6 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    except KeyboardInterrupt:
-        console.print("\n[bold red]>>> EXITING...[/]")
-        sys.exit(0)
