@@ -1,7 +1,6 @@
 import os, subprocess, sys, hashlib, threading, time, base64
 from datetime import datetime
 
-# --- OTOMATİK KÜTÜPHANE YÜKLEYİCİ ---
 def prepare_libs():
     libs = {"requests": "requests", "rich": "rich", "cryptography": "cryptography", "pyrebase4": "pyrebase4"}
     for lib, imp in libs.items():
@@ -24,8 +23,6 @@ from pyrebase import pyrebase
 console = Console(force_terminal=True)
 SALT_VAL = b"Rhyme_99_X_Secret"
 
-# --- BOT-PROOF CONFIG (Parçalanmış ve Gizlenmiş) ---
-# GitHub botları artık bu anahtarı düz metin olarak okuyup iptal ettiremez.
 k1 = "AIzaSyDR8"
 k2 = "VxCGtzRhy"
 k3 = "OeLxYXfKCI"
@@ -66,7 +63,6 @@ def draw_header(user=None):
     console.print("\n")
 
 def chat_screen(room_id, username, target, tk, token):
-    # Anahtar Türetme (AES-256)
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=SALT_VAL, iterations=100000)
     key = base64.urlsafe_b64encode(kdf.derive(tk.encode()))
     cipher = Fernet(key)
@@ -86,7 +82,7 @@ def chat_screen(room_id, username, target, tk, token):
                             m = data[m_id]
                             u_dec = cipher.decrypt(m['u'].encode()).decode()
                             m_dec = cipher.decrypt(m['m'].encode()).decode()
-                            if u_dec != username: sys.stdout.write('\a'); sys.stdout.flush() # Zil Sesi
+                            if u_dec != username: sys.stdout.write('\a'); sys.stdout.flush()
                             color = "red" if u_dec != username else "green"
                             console.print(f"[bold cyan][{m['t']}][/] [bold {color}]{u_dec.upper() if u_dec != username else 'YOU'}:[/] [bold white]{m_dec}[/]")
                             shown_msgs.add(m_id)
@@ -99,7 +95,7 @@ def chat_screen(room_id, username, target, tk, token):
             msg = input().strip()
             if not msg: continue
             if msg.lower() == 'q': stop_event.set(); break
-            sys.stdout.write("\033[A\033[K") # Satırı temizle
+            sys.stdout.write("\033[A\033[K")
             db.child("messages").child(room_id).push({
                 "u": cipher.encrypt(username.encode()).decode(),
                 "m": cipher.encrypt(msg.encode()).decode(),
@@ -145,7 +141,6 @@ def main():
                     target = Prompt.ask("[bold white]TARGET USERNAME[/]").lower().strip()
                     tk = Prompt.ask("[bold white]TUNNEL KEY (T-KEY)[/]", password=True).strip()
                     t_id = hashlib.sha256((target + "R_S").encode()).hexdigest()[:12]
-                    # Ortak oda ID oluşturma
                     r_id = f"CH_{sorted([u_id, t_id])[0]}_{sorted([u_id, t_id])[1]}"
                     chat_screen(r_id, curr_u, target, tk, token)
                 elif choice == "q": break
