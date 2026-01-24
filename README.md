@@ -14,7 +14,7 @@ Terminal Messenger is a minimalist, ultra-secure, and end-to-end encrypted (E2EE
   
  **💾 Cloud Persistence:** Messages are stored in a secure Firebase Realtime Database. They stay there until you decide to change the tunnel.
   
- **🔔 Audible Bell (Notification):**Integrated terminal bell (\a) triggers a "Beep" sound when a new message arrives from your partner.
+ **🔔 Audible Bell (Notification):** Integrated terminal bell (\a) triggers a "Beep" sound when a new message arrives from your partner.
   
  **🎨 Terminal Aesthetics:** A beautiful, color-coded interface designed with the rich library for maximum readability.
   
@@ -113,8 +113,6 @@ We are constantly working to make Terminal Messenger the most secure CLI chat to
    **🕵️ Metadata & Username Anonymity:** Currently, usernames are masked with SHA-256. While the message content is 100% secure, we are working on a more advanced relay system to further decouple identities from room IDs.
 
    **📁 Encrypted File Transfer:** Implementation of a system to send small files (base64 encoded) through the same AES-256 encrypted tunnel.
-
-   **📉 Auto-Destructing Messages:** A "Burn After Reading" feature that deletes messages from the Firebase database after a set period.
 
    **🔑 Multi-Factor Authentication (MFA):** Adding a second layer of security via mobile or email codes for the login process.
 
