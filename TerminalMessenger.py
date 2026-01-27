@@ -1,12 +1,58 @@
-import os, subprocess, sys, hashlib, threading, time, base64
+qimport os, subprocess, sys, hashlib, threading, time, base64
 from datetime import datetime
 
+# --- CRITICAL PATCH FOR PYREBASE / URLLIB3 ---
+import types
+try:
+    import urllib3.contrib
+    urllib3.contrib.appengine = types.ModuleType("urllib3.contrib.appengine")
+    urllib3.contrib.appengine.is_appengine_sandbox = lambda: False
+    sys.modules["urllib3.contrib.appengine"] = urllib3.contrib.appengine
+except:
+    pass
+
 def prepare_libs():
-    libs = {"requests": "requests", "rich": "rich", "cryptography": "cryptography", "pyrebase4": "pyrebase4"}
-    for lib, imp in libs.items():
-        try: __import__(imp.replace("pyrebase4", "pyrebase"))
-        except ImportError:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", lib, "--quiet"])
+    libs = {
+        "requests": "requests",
+        "rich": "rich",
+        "cryptography": "cryptography",
+        "pyrebase4": "pyrebase4"
+    }
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("\033[1;31m[!] INITIALIZING GHOST TUNNEL SYSTEM...\033[0m")
+
+    try:
+        import rich
+    except ImportError:
+        print("\033[1;33m[*] SETTING UP UI COMPONENTS...\033[0m")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "rich", "--quiet", "--break-system-packages", "--trusted-host", "pypi.org", "--trusted-host", "files.pythonhosted.org"])
+
+    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, DownloadColumn, TransferSpeedColumn
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(),
+        DownloadColumn(),
+        TransferSpeedColumn(),
+        "[bold cyan]{task.percentage:>3.0f}%",
+    ) as progress:
+
+        for lib, imp in libs.items():
+            try:
+                __import__(imp.replace("pyrebase4", "pyrebase"))
+            except ImportError:
+                task_id = progress.add_task(f"Installing {lib.upper()}...", total=None)
+                try:
+                    subprocess.check_call([
+                        sys.executable, "-m", "pip", "install", lib,
+                        "--quiet", "--break-system-packages",
+                        "--trusted-host", "pypi.org", "--trusted-host", "files.pythonhosted.org"
+                    ])
+                    progress.update(task_id, completed=100, description=f"[bold green]{lib.upper()} READY[/]")
+                except:
+                    progress.update(task_id, description=f"[bold red]{lib.upper()} ERROR[/]")
 
 prepare_libs()
 
@@ -23,10 +69,7 @@ from pyrebase import pyrebase
 console = Console(force_terminal=True)
 SALT_VAL = b"Rhyme_99_X_Secret"
 
-k1 = "AIzaSyDR8"
-k2 = "VxCGtzRhy"
-k3 = "OeLxYXfKCI"
-k4 = "JFm8vwaT0us"
+k1, k2, k3, k4 = "AIzaSyDR8", "VxCGtzRhy", "OeLxYXfKCI", "JFm8vwaT0us"
 
 firebaseConfig = {
     "apiKey": k1 + k2 + k3 + k4,
@@ -49,11 +92,11 @@ except:
 def draw_header(user=None):
     os.system('cls' if os.name == 'nt' else 'clear')
     logo = r"""
-[bold red]  _______ ______ _____  __  __ _____ _   _          _      
- |__   __|  ____|  __ \|  \/  |_   _| \ | |   /\   | |     
-    | |  | |__  | |__) | \  / | | | |  \| |  /  \  | |     
-    | |  |  __| |  _  /| |\/| | | | | . ` | / /\ \ | |     
-    | |  | |____| | \ \| |  | |_| |_| |\  |/ ____ \| |____ 
+[bold red]  _______ ______ _____  __  __ _____ _   _          _
+ |__   __|  ____|  __ \|  \/  |_   _| \ | |   /\   | |
+    | |  | |__  | |__) | \  / | | | |  \| |  /  \  | |
+    | |  |  __| |  _  /| |\/| | | | | . ` | / /\ \ | |
+    | |  | |____| | \ \| |  | |_| |_| |\  |/ ____ \| |____
     |_|  |______|_|  \_\_|  |_|_____|_| \_/_/    \_\______|[/]
 """
     console.print(Align.center(logo))
@@ -66,7 +109,7 @@ def chat_screen(room_id, username, target, tk, token):
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=SALT_VAL, iterations=100000)
     key = base64.urlsafe_b64encode(kdf.derive(tk.encode()))
     cipher = Fernet(key)
-    
+
     draw_header(username)
     console.print(Align.center(f"[bold red]>>> TUNNELING WITH: {target.upper()} <<<[/]\n"))
     shown_msgs = set()
@@ -101,7 +144,9 @@ def chat_screen(room_id, username, target, tk, token):
                 "m": cipher.encrypt(msg.encode()).decode(),
                 "t": datetime.now().strftime("%H:%M")
             }, token)
-        except: break
+        except (KeyboardInterrupt, EOFError):
+            stop_event.set()
+            return
 
 def main():
     try:
@@ -110,22 +155,27 @@ def main():
         while True:
             draw_header()
             console.print(Align.center(Panel("[bold white]Type “token” to connect[/]", border_style="bold yellow", expand=False)))
-            if Prompt.ask("\n[bold cyan]>>>[/]").strip().lower() != "token": continue
-            
+            try:
+                if Prompt.ask("\n[bold cyan]>>>[/]").strip().lower() != "token": continue
+            except (KeyboardInterrupt, EOFError): break
+
             curr_u = None
             while not curr_u:
                 draw_header()
-                u = Prompt.ask("[bold white]USERNAME[/]").lower().strip()
-                p = Prompt.ask("[bold white]PASSWORD[/]", password=True).strip()
+                try:
+                    u = Prompt.ask("[bold white]USERNAME[/]").lower().strip()
+                    p = Prompt.ask("[bold white]PASSWORD[/]", password=True).strip()
+                except (KeyboardInterrupt, EOFError): return
+
                 u_id = hashlib.sha256((u + "R_S").encode()).hexdigest()[:12]
                 p_hash = hashlib.sha256((p + "R_P").encode()).hexdigest()
-                
+
                 res = db.child("users").child(u_id).get(token).val()
                 if not res:
                     db.child("users").child(u_id).set({"pass": p_hash}, token)
                     curr_u = u
                 elif res.get('pass') == p_hash: curr_u = u
-                else: 
+                else:
                     console.print(Align.center("[bold red]WRONG PASS[/]"))
                     time.sleep(1)
 
@@ -135,17 +185,25 @@ def main():
                 menu.add_row("[bold yellow]1.[/]", "[bold white]OPEN TUNNEL[/]")
                 menu.add_row("[bold red]Q.[/]", "[bold red]LOGOUT[/]")
                 console.print(Align.center(Panel(menu, title="[bold white]MENU[/]", border_style="bold white", expand=False)))
-                choice = Prompt.ask("\n[bold white]SELECT[/]").lower().strip()
-                
+                try:
+                    choice = Prompt.ask("\n[bold white]SELECT[/]").lower().strip()
+                except (KeyboardInterrupt, EOFError): return
+
                 if choice == "1":
-                    target = Prompt.ask("[bold white]TARGET USERNAME[/]").lower().strip()
-                    tk = Prompt.ask("[bold white]TUNNEL KEY (T-KEY)[/]", password=True).strip()
+                    try:
+                        target = Prompt.ask("[bold white]TARGET USERNAME[/]").lower().strip()
+                        tk = Prompt.ask("[bold white]TUNNEL KEY (T-KEY)[/]", password=True).strip()
+                    except (KeyboardInterrupt, EOFError): break
                     t_id = hashlib.sha256((target + "R_S").encode()).hexdigest()[:12]
                     r_id = f"CH_{sorted([u_id, t_id])[0]}_{sorted([u_id, t_id])[1]}"
                     chat_screen(r_id, curr_u, target, tk, token)
                 elif choice == "q": break
+    except KeyboardInterrupt:
+        pass
     except Exception as e:
         console.print(f"[bold red]HATA: {e}[/]")
+    finally:
+        console.print("\n[bold red]>>> DISCONNECTED.[/]\n")
 
 if __name__ == "__main__":
     main()
