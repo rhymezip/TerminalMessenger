@@ -29,19 +29,18 @@ Unlike standard secure messengers, this tool is designed to run in a volatile en
 **Prerequisites**
 You need Python 3.8+. The system relies on the following cryptographic engines:
 
-• pycryptodome (AES-GCM engine)
+• **pycryptodome** `(AES-GCM engine)`
 
-• argon2-cffi (KDF engine)
+• **argon2-cffi** `(KDF engine)`
 
-• pyrebase4 (Transport layer)
+• **pyrebase4** `(Transport layer)`
 
-• rich (UI rendering)
+• **rich** `(UI rendering)`
 
 ### 🪟 Windows
 
 1. Open `PowerShell` or `CMD` in the folder.
-2. Install dependencies:
-   `pip install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
+2. Install dependencies: `pip install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
 3. Run:
    ```powershell
    python TerminalMessenger.py
@@ -49,8 +48,7 @@ You need Python 3.8+. The system relies on the following cryptographic engines:
 ### 🍎 macOS
 
 1. Open Terminal (`Cmd + Space` > `Terminal`).
-2. Install dependencies:
-   `pip3 install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
+2. Install dependencies: `pip3 install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
 3. *Run:
     ```Bash
     python3 TerminalMessenger.py
@@ -58,9 +56,8 @@ You need Python 3.8+. The system relies on the following cryptographic engines:
 ### 🐧 Linux
 For systems with "Externally Managed Environment" (PEP 668) errors:
 1. Open Terminal.
-2. Recommended Install (System Break Method):
-   `pip install -r requirements.txt --break-system-packages`
-3.Run:
+2. Recommended Install (System Break Method): `pip install -r requirements.txt --break-system-packages`
+3. Run:
     ```Bash
     python3 TerminalMessenger.py
 
