@@ -49,7 +49,7 @@ You need Python 3.8+. The system relies on the following cryptographic engines:
 
 1. Open Terminal (`Cmd + Space` > `Terminal`).
 2. Install dependencies: `pip3 install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
-3. *Run:
+3. Run:
     ```Bash
     python3 TerminalMessenger.py
     
