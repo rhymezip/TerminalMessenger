@@ -60,7 +60,7 @@ For systems with "Externally Managed Environment" (PEP 668) errors:
 1. Open Terminal.
 2. Recommended Install (System Break Method):
    `pip install -r requirements.txt --break-system-packages`
-4.Run:
+3.Run:
     ```Bash
     python3 TerminalMessenger.py
 
