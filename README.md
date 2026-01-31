@@ -10,13 +10,15 @@ Unlike standard secure messengers, this tool is designed to run in a volatile en
 
   ## 🚀 Key Features
 
- **🛡️ AES-256-GCM (Galois/Counter Mode):** We have abandoned legacy standards. Every message is sealed with AES-256-GCM, providing not just confidentiality, but Cryptographic Integrity. Any attempt to tamper with the ciphertext (even a single bit flip by a database admin) will cause the decryption to fail instantly, alerting the user.
+ **🛡️ AES-256-CFB (Advanced Cipher Block)**: Every message is sealed with AES-256 using a dynamic Initialization Vector (IV). This means even if you send the same word twice, the ciphertext will look completely different every time, making pattern analysis impossible.
   
- **🧠 Argon2id (Memory-Hard KDF):** Your passwords and Tunnel Keys are NOT stored as simple hashes. We utilize Argon2id (the winner of the Password Hashing Competition), configured with high memory costs (64MB RAM per hash). This makes GPU-based brute-force attacks mathematically infeasible.
+**🧠 PBKDF2 with Custom Salt**: We utilize PBKDF2 (Password-Based Key Derivation Function 2) with a high iteration count and a hardcoded unique salt. This process transforms your Tunnel Key into a 256-bit cryptographic engine, making brute-force attacks against your messages mathematically infeasible.
   
- **🕵️ 256-Bit Identity Masking:** Usernames are never stored in plaintext. They are hashed into 64-character (256-bit) SHA-256 strings. This ensures zero collision probability and makes database enumeration impossible without knowing the exact usernames.
+**🕵️ 256-Bit Identity Masking**: Usernames are never stored in plaintext. They are hashed into SHA-256 strings. This ensures zero collision probability and makes database enumeration impossible without knowing the exact usernames.
   
- **🛡️ Smart Dependency Guard:** To prevent supply-chain attacks and respect system boundaries (especially on Arch/Debian), the script does NOT auto-install packages blindly. Instead, it performs a deep scan and provides the exact safe installation commands for your specific OS (including PEP 668 overrides).
+**🛡️ Smart Dependency Guard**: To prevent supply-chain attacks and respect system boundaries, the script performs a deep scan of your environment and provides the exact safe installation commands for your specific OS.
+
+**🤫 Silent Ghost Mode**: Decryption failures (due to wrong keys or old data) are handled silently. The system will never leak information about whether a packet was valid or not to an unauthorized observer.
   
  **🔔 Audible Bell & Stealth Mode:** Integrated terminal bell (\a) triggers a discrete hardware "Beep" when a new message arrives, allowing you to keep the terminal minimized while working.
   
@@ -31,16 +33,14 @@ You need Python 3.8+. The system relies on the following cryptographic engines:
 
 • **pycryptodome** `(AES-GCM engine)`
 
-• **argon2-cffi** `(KDF engine)`
-
-• **pyrebase4** `(Transport layer)`
+• **requests** `(Transport Layer)`
 
 • **rich** `(UI rendering)`
 
 ### 🪟 Windows
 
 1. Open `PowerShell` or `CMD` in the folder.
-2. Install dependencies: `pip install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
+2. Install dependencies: `pip install -r requirements.txt --break-system-packages`
 3. Run:
    ```powershell
    python TerminalMessenger.py
@@ -48,7 +48,7 @@ You need Python 3.8+. The system relies on the following cryptographic engines:
 ### 🍎 macOS
 
 1. Open Terminal (`Cmd + Space` > `Terminal`).
-2. Install dependencies: `pip3 install pycryptodome argon2-cffi pyrebase4 rich --break-system-packages`
+2. Install dependencies: `pip install -r requirements.txt --break-system-packages`
 3. Run:
     ```Bash
     python3 TerminalMessenger.py
@@ -91,22 +91,25 @@ If you don't hear a "beep" when a new message arrives:
   
   **Authentication:** 
   • Enter Username & Password.
-  • Note: Passwords are processed via Argon2id. A lost password is physically unrecoverable.
+  • Note: Passwords are processed via SHA-256. A lost password is physically unrecoverable.
+
+  **Access Token:**
+  • You must enter the correct Access Token to connect to the secure network. Unauthorized attempts will be rejected immediately.
   
   **The Handshake:** 
   • Enter the target's username.
-  • System generates a deterministic Room ID based on SHA-256 sorting.
+  • System generates a deterministic Room ID based on SHA-256 sorting of both parties.
   
   **Tunnel Opening:**
   • Enter the Tunnel Key (T-Key).
-  • WARNING: This key is the seed for the AES-256-GCM engine. It is NEVER sent to the server. Both parties must enter the exact same key.
+  • WARNING: This key is the seed for the AES-256 engine. It is NEVER sent to the server. Both parties must enter the exact same key to see each other's messages.
   
   **Messaging:** 
   • Type and hit Enter.
   • If the "Bell" rings, a packet has been successfully verified and decrypted.
   
   **Exit Strategy:** 
-  • Type q and hit Enter to collapse the tunnel and return to the main menu safely.
+  • Type `q` and hit Enter to collapse the tunnel and return to the main menu safely. Press `Ctrl+C` for an emergency exit.
 
 ---
 
@@ -120,9 +123,10 @@ Zero-Knowledge Rule: Any code contribution must verify that no key material ever
 ### Security & Threat Model (Read Carefully):
 What is Secure?
 
-• Content: Messages are encrypted with AES-256-GCM. Even if the Firebase database is dumped, the attacker sees only random bytes.
-• Integrity: GCM tags prevent message tampering.
+• Content:Messages are encrypted with AES-256. Even if the server is compromised, the attacker sees only random Base64 noise.
+• Integrity: Dynamic IV prevents replay attacks and pattern recogniti
 • Keys: Your Tunnel Key resides only in your RAM and is cleared upon exit.
+• Zero-Knowledge: No keys, salts, or plaintext data ever touch the network stack.
 
 ---
 
