@@ -1,4 +1,3 @@
-pyrebase4
-rich
 pycryptodome
-argon2-cffi
+requests
+rich
