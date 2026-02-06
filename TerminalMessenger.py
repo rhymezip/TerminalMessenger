@@ -23,7 +23,7 @@ from rich.panel import Panel
 
 console = Console(force_terminal=True)
 
-SERVER_URL = ""
+SERVER_URL = "https://rhymes-temrinal-messenger-default-rtdb.europe-west1.firebasedatabase.app"
 
 class ApocalypseCrypto:
     def __init__(self, tk):
@@ -46,14 +46,15 @@ class ApocalypseCrypto:
 
 def draw_header(user=None):
     os.system('cls' if os.name == 'nt' else 'clear')
+    # L harfi ve hizalama duzeltildi
     logo = r"""
- [bold red] _______ ______ _____  __  __ _____ _   _          _
- |__   __|  ____|  __ \|  \/  |_   _| \ | |    /\    | |
-    | |  | |__  | |__) | \  / | | | |  \| |   /  \   | |
-    | |  |  __| |  _  /| |\/| | | | | . ` |  / /\ \  | |
-    | |  | |____| | \ \| |  | |_| |_| |\  | / ____ \ | |____
-    |_|  |______|_|  \_\_|  |_|_____|_| \_/_/    \_\______|[/]
-                                         [bold grey]by rhymezip[/]
+ [bold red] _______ ______ _____  __  __ _____ _   _           _
+ |__   __|  ____|  __ \|  \/  |_   _| \ | |    /\   | |
+    | |  | |__  | |__) | \  / | | | |  \| |   /  \  | |
+    | |  |  __| |  _  /| |\/| | | | | . ` |  / /\ \ | |
+    | |  | |____| | \ \| |  | |_| |_| |\  | / ____ \| |____
+    |_|  |______|_|  \_\_|  |_|_____|_| \_/_/     \_\______|[/]
+                                         [bold white]by rhymezip[/]
 """
     console.print(Align.center(logo))
     if user:
@@ -63,8 +64,8 @@ def listen(room_id, crypto, username):
     shown_msgs = set()
     while True:
         try:
-            res = requests.get(f"{SERVER_URL}/messages?room={room_id}", timeout=5)
-            if res.status_code == 200:
+            res = requests.get(f"{SERVER_URL}/messages/{room_id}.json", timeout=5)
+            if res.status_code == 200 and res.json():
                 data = res.json()
                 for m_id in sorted(data.keys()):
                     m = data[m_id]
@@ -94,9 +95,18 @@ def main():
             draw_header()
             u = Prompt.ask( "[bold white] USER").lower().strip()
             p = Prompt.ask("[bold white] password", password=True).strip()
-            res = requests.post(f"{SERVER_URL}/login", json={"u": u, "p": hashlib.sha256(p.encode()).hexdigest()})
-            if res.status_code == 200: curr_u = u
-            else: console.print("[red]FAIL[/]"); time.sleep(1)
+            p_hash = hashlib.sha256(p.encode()).hexdigest()
+
+            res = requests.get(f"{SERVER_URL}/users/{u}.json")
+            user_data = res.json()
+
+            if user_data is None: # Yeni kullanici olustur
+                requests.put(f"{SERVER_URL}/users/{u}.json", json={"p": p_hash})
+                curr_u = u
+            elif user_data.get("p") == p_hash:
+                curr_u = u
+            else:
+                console.print("[red]FAIL[/]"); time.sleep(1)
 
         while curr_u:
             draw_header(curr_u)
@@ -122,8 +132,10 @@ def main():
                     sys.stdout.write("\033[A\033[K")
                     t_now = datetime.now().strftime("%H:%M")
                     console.print(f"[bold cyan][{t_now}][/] [bold green]YOU:[/] [bold white]{msg}[/]")
-                    requests.post(f"{SERVER_URL}/send", json={"room": room_id, "u": curr_u, "m": crypto.encrypt(msg), "t": t_now})
+                    # Mesaj gonderme (REST API uyumlu)
+                    requests.post(f"{SERVER_URL}/messages/{room_id}.json", json={"u": curr_u, "m": crypto.encrypt(msg), "t": t_now})
             else: break
     except KeyboardInterrupt: sys.exit(0)
+
 if __name__ == "__main__":
     main()
