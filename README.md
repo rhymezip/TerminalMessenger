@@ -64,6 +64,7 @@ For systems with "Externally Managed Environment" (PEP 668) errors:
     
   ### 🔔 Notification Sound Setup
 If you don't hear a "beep" when a new message arrives:
+ 
   **Windows (Terminal):** Settings > Defaults > Advanced > Bell notification style -> Set to "Audible".
     
   **macOS (Terminal):** Terminal Settings > Profiles > Advanced > Check "Audible bell".
