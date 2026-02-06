@@ -28,7 +28,7 @@ from rich.align import Align
 from rich.panel import Panel
 
 console = Console(force_terminal=True)
-SERVER_URL = "https://expected-mahala-terminalmessenger-479cd8f0.koyeb.app"
+SERVER_URL = "https://rhymezip-terminal-backend.hf.space"
 
 class ApocalypseCrypto:
     def __init__(self, tk):
