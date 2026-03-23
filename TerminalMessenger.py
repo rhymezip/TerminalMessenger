@@ -46,7 +46,6 @@ class ApocalypseCrypto:
 
 def draw_header(user=None):
     os.system('cls' if os.name == 'nt' else 'clear')
-    # L harfi ve hizalama duzeltildi
     logo = r"""
  [bold red] _______ ______ _____  __  __ _____ _   _           _
  |__   __|  ____|  __ \|  \/  |_   _| \ | |    /\   | |
@@ -100,7 +99,7 @@ def main():
             res = requests.get(f"{SERVER_URL}/users/{u}.json")
             user_data = res.json()
 
-            if user_data is None: # Yeni kullanici olustur
+            if user_data is None:
                 requests.put(f"{SERVER_URL}/users/{u}.json", json={"p": p_hash})
                 curr_u = u
             elif user_data.get("p") == p_hash:
@@ -132,7 +131,6 @@ def main():
                     sys.stdout.write("\033[A\033[K")
                     t_now = datetime.now().strftime("%H:%M")
                     console.print(f"[bold cyan][{t_now}][/] [bold green]YOU:[/] [bold white]{msg}[/]")
-                    # Mesaj gonderme (REST API uyumlu)
                     requests.post(f"{SERVER_URL}/messages/{room_id}.json", json={"u": curr_u, "m": crypto.encrypt(msg), "t": t_now})
             else: break
     except KeyboardInterrupt: sys.exit(0)
