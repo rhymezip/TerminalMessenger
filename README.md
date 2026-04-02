@@ -95,7 +95,7 @@ If you don't hear a "beep" when a new message arrives:
   
   • Deploy your backend and get your Server URL.
   
-  • Open `TerminalMessenger.py` and find the `SERVER_URL = ""` line.
+  • Open `TerminalMessenger.py` and find the `SERVER_URL = "HERE UR URL"` line.
   
   • Paste your URL inside the quotes.
   
