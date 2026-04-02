@@ -82,8 +82,8 @@ def listen(room_id, crypto, username):
         time.sleep(1.2)
 
 def main():
-    if not SERVER_URL:
-        console.print("[bold red]ERROR:[/] Please set your SERVER_URL in the script!")
+    if not SERVER_URL or SERVER_URL == "HERE UR URL":
+        console.print("[bold red]ERROR:[/] Add your URL in line 26!")
         return
 
     try:
