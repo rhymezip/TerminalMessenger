@@ -23,7 +23,7 @@ from rich.panel import Panel
 
 console = Console(force_terminal=True)
 
-SERVER_URL = "https://rhymes-temrinal-messenger-default-rtdb.europe-west1.firebasedatabase.app"
+SERVER_URL = "HERE UR URL"
 
 class ApocalypseCrypto:
     def __init__(self, tk):
