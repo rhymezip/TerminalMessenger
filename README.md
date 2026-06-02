@@ -1,4 +1,4 @@
-  # 🛡️ TERMINAL MESSENGER (rhyme Edition)
+  # 🛡️ TERMINAL MESSENGER
 
 > **"Speed, Privacy, and the Mathematical Impossibility of Decryption."**
 
